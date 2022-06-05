@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-go-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-go-service
+      version: v1
+  template:
+    metadata:
+      labels:
+         app: sample-go-service
+         version: v1
+    spec:
+      containers:
+        - name: sample-go-service
+          image: public.ecr.aws/mock-node-api/node-mock-api:sample-go
+          livenessProbe:
+            httpGet:
+              path: /health
+              port:  8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: dev-env
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+
