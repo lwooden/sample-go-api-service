@@ -10,6 +10,6 @@ func main() {
 	r := routes.SetupRouter()
 
 	// Running
-	r.Run()
+	r.Run(":8080")
 
 }

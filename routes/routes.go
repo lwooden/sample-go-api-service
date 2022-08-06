@@ -13,8 +13,12 @@ func SetupRouter() *gin.Engine {
 
 	v1 := router.Group("/v1")
 	{
-		v1.GET("api/private", handlers.GenerateMessage)
-		v1.GET("api/public", handlers.FetchCatFacts)
+		v1.GET("api/echo", handlers.GetEcho)
+		v1.GET("api/env", handlers.GetEnvironment)
+		v1.GET("api/kubernetes", handlers.GetPodInfo)
+		v1.GET("api/cats", handlers.FetchCatFacts)
+		v1.POST("/api/sum", handlers.Sum)
+
 		// 	v1.GET("api/category", Handlers.GetAllCategories)
 		// 	v1.POST("api/category", Handlers.CreateCategory)
 

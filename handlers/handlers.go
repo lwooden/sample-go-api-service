@@ -16,30 +16,69 @@ import (
 // In the Go GIN WebFramework, controllers are more like like Handlers;
 
 func HealthCheck(c *gin.Context) {
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Sample Go service is healthy!",
 	})
 }
 
-func GenerateMessage(c *gin.Context) {
+func GetEcho(c *gin.Context) {
+
+	term := c.Query("term") // access a query string parameter
+	c.JSON(http.StatusOK, gin.H{
+		"message": fmt.Sprintf("You said %s", term),
+	})
+}
+
+func GetEnvironment(c *gin.Context) {
 
 	val, doesExist := os.LookupEnv("ENV")
 
-	if doesExist == false {
+	if doesExist {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "Looks like your ENV enviromnet variable is not set! I don't know wehre I am!",
+			"message": fmt.Sprintf("Looks like your are running in a %s environment", val),
 		})
-	} else if val == "C2S" {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Looks like you don't have access to the internet! All is working here!",
-		})
+	} else {
 
-	} else if val == "Public" {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Looks like you have access to the internet! Head over to the /public internet and get some Pokemon facts!",
-		})
+		c.JSON(http.StatusNotFound, "No environment has been set!")
 
 	}
+}
+
+func Sum(c *gin.Context) {
+
+	var values models.Sum // initialize Sum object that I am going to bind the payload data to
+	c.Bind(&values)
+
+	sum := values.Val_1 + values.Val_2
+
+	c.JSON(http.StatusOK, gin.H{
+		"sum": sum,
+	})
+
+}
+
+func GetPodInfo(c *gin.Context) {
+
+	nodeName, exist := os.LookupEnv("NODE_NAME")
+	podName, _ := os.LookupEnv("POD_NAME")
+	podIP, _ := os.LookupEnv("POD_IP")
+	podNamespace, _ := os.LookupEnv("POD_NAMESPACE")
+	podServiceAccount, _ := os.LookupEnv("POD_SERVICE")
+
+	if !exist {
+
+		nodeName = "Not in a Kubernetes Environment. Can't tell ya!"
+		podName = "Not in a Kubernetes Environment. Can't tell ya!"
+		podIP = "Not in a Kubernetes Environment. Can't tell ya!"
+		podNamespace = "Not in a Kubernetes Environment. Can't tell ya!"
+		podServiceAccount = "Not in a Kubernetes Environment. Can't tell ya!"
+
+	}
+
+	pod := models.PodMetadata{nodeName, podName, podIP, podNamespace, podServiceAccount}
+
+	c.JSON(http.StatusOK, pod)
 
 }
 

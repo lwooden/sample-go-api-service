@@ -4,4 +4,4 @@ metadata:
   name: dev-env
 data:
   PORT: "8080"
-  ENV: "C2S"
+  ENV: "unclassified"
