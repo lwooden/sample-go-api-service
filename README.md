@@ -2,7 +2,7 @@
 # Sample GO API
 
 ## Methods/Endpoints
-GET - /v1/api/echo
+GET - /v1/api/echo?term=string
 
 GET - /v1/api/env
 
