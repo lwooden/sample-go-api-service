@@ -132,3 +132,51 @@ func FetchCatFacts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, payload)
 
 }
+
+func GetPokemom(c *gin.Context) {
+
+	id := c.Param("id")
+	println("Pokemon ID =>", id)
+
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s", id)
+
+	client := http.Client{}
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+
+	if err != nil {
+		println(err)
+	}
+
+	res, getErr := client.Do(req)
+
+	if getErr != nil {
+		println(getErr)
+	}
+
+	if res.Body != nil {
+		defer res.Body.Close()
+	}
+
+	// Response comes back in the form of an address to a location in memory -- Response => 0xc000506000
+	println("Response =>", res)
+
+	body, readErr := ioutil.ReadAll(res.Body)
+
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
+	payload := models.Pokemon{}
+
+	jsonErr := json.Unmarshal(body, &payload)
+
+	if jsonErr != nil {
+		log.Fatal(jsonErr)
+	}
+
+	fmt.Println(payload.ID)
+
+	c.IndentedJSON(http.StatusOK, payload)
+
+}
