@@ -1,4 +1,4 @@
 releases:
 - name: sample-go-local-k8
   chart: ./helm_local
-  installed: true
+  installed: false
