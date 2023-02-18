@@ -10,6 +10,12 @@ type CatFact struct {
 	Deleted   bool   `json:"deleted"`
 }
 
+type Pokemon struct {
+	ID              int    `json:"id"`
+	Name            string `json:"name"`
+	Base_Experience int    `json:"base_experience"`
+}
+
 type Sum struct {
 	Val_1 int
 	Val_2 int
