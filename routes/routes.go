@@ -17,6 +17,7 @@ func SetupRouter() *gin.Engine {
 		v1.GET("api/env", handlers.GetEnvironment)
 		v1.GET("api/kubernetes", handlers.GetPodInfo)
 		v1.GET("api/cats", handlers.FetchCatFacts)
+		v1.GET("api/pokemon/:id", handlers.GetPokemom)
 		v1.POST("/api/sum", handlers.Sum)
 
 		// 	v1.GET("api/category", Handlers.GetAllCategories)
